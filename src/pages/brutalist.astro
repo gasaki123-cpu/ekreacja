@@ -1,0 +1,330 @@
+---
+---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Ekreacja — Brutalist</title>
+
+  <script is:inline>
+    (function() {
+      var p = window.location.pathname;
+      if (p === '/login' || p === '/login/') return;
+      try { if (localStorage.getItem('ekreacja_auth') === 'ok') return; } catch (e) {}
+      document.documentElement.style.visibility = 'hidden';
+      window.location.replace('/login');
+    })();
+  </script>
+
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { mono: ['JetBrains Mono', 'monospace'] },
+          colors: { off: '#FAFAF7', ink: '#0A0A0A', acid: '#D4FF00' },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; background: #FAFAF7; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      color: #0A0A0A;
+      background: #FAFAF7;
+      overflow-x: hidden;
+      font-size: 14px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: #0A0A0A; color: #D4FF00; }
+
+    .reveal { opacity: 0; transition: opacity 0.6s; }
+    .reveal.in { opacity: 1; }
+
+    .blink::after {
+      content: '_';
+      animation: blink 1.05s steps(2, start) infinite;
+      margin-left: 2px;
+    }
+    @keyframes blink { to { visibility: hidden; } }
+
+    .service-row {
+      transition: background 0.15s, color 0.15s;
+    }
+    .service-row:hover {
+      background: #0A0A0A;
+      color: #D4FF00;
+    }
+    .service-row:hover .marker { color: #D4FF00; }
+
+    .marquee {
+      display: flex;
+      animation: scroll 30s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .back-link {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 60;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: #0A0A0A;
+      color: #FAFAF7;
+      padding: 8px 14px;
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: #D4FF00; color: #0A0A0A; }
+
+    .underline-thick { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
+    .hero-title {
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+    }
+  </style>
+</head>
+
+<body>
+
+  <a href="/" class="back-link">[← all styles]</a>
+
+  <nav class="border-b border-ink">
+    <div class="max-w-6xl mx-auto px-6 md:px-8 h-14 flex items-center justify-between">
+      <a href="#top" class="font-bold tracking-tight">EKREACJA.</a>
+      <div class="flex items-center gap-6 text-xs uppercase tracking-wider">
+        <a href="#onas" class="hover:underline underline-thick">[01] o-nas</a>
+        <a href="#oferta" class="hover:underline underline-thick">[02] co-robimy</a>
+        <a href="#kontakt" class="hover:underline underline-thick">[03] kontakt</a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="top" class="border-b border-ink">
+    <div class="max-w-6xl mx-auto px-6 md:px-8 py-16 md:py-24">
+
+      <div class="text-xs uppercase tracking-wider text-ink/60 mb-12 flex items-center gap-3">
+        <span class="inline-block w-2 h-2 bg-ink"></span>
+        <span>system.ekreacja.v18 // agencja kreatywna // 2007–<span id="year">2026</span></span>
+      </div>
+
+      <h1 class="hero-title text-[12vw] md:text-[8vw] lg:text-[6.5rem] mb-12">
+        AGENCJA<br />
+        KREATYWNA.<span class="blink"></span>
+      </h1>
+
+      <div class="grid md:grid-cols-12 gap-6 border-t border-ink pt-10">
+        <div class="md:col-span-2 text-xs uppercase tracking-wider text-ink/60">
+          <div>// description</div>
+        </div>
+        <div class="md:col-span-7 text-base md:text-lg leading-relaxed">
+          Od osiemnastu lat budujemy widoczność, która zamienia się w Twój zysk.
+          Strony, sklepy, SEO, reklamy, social, video. Wszystko pod jednym dachem.
+        </div>
+        <div class="md:col-span-3 md:text-right">
+          <a href="#oferta" class="inline-block bg-ink text-off px-5 py-3 text-xs uppercase tracking-wider hover:bg-acid hover:text-ink transition">
+            [↓] zobacz co robimy
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-ink overflow-hidden bg-ink text-off">
+      <div class="marquee py-3 text-sm uppercase tracking-widest">
+        <span class="px-6">★ strony www</span><span class="px-6">★ sklepy on-line</span><span class="px-6">★ seo &amp; google ads</span><span class="px-6">★ social media</span><span class="px-6">★ content marketing</span><span class="px-6">★ video &amp; foto</span>
+        <span class="px-6">★ strony www</span><span class="px-6">★ sklepy on-line</span><span class="px-6">★ seo &amp; google ads</span><span class="px-6">★ social media</span><span class="px-6">★ content marketing</span><span class="px-6">★ video &amp; foto</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="onas" class="border-b border-ink">
+    <div class="max-w-6xl mx-auto px-6 md:px-8 py-16 md:py-24">
+
+      <div class="grid md:grid-cols-12 gap-8 mb-12">
+        <div class="md:col-span-2 text-xs uppercase tracking-wider text-ink/60">
+          <div>/section_01</div>
+        </div>
+        <div class="md:col-span-10">
+          <h2 class="hero-title text-4xl md:text-6xl mb-2">
+            kim_jestesmy?
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-8 reveal">
+        <div class="md:col-span-2 text-xs uppercase tracking-wider text-ink/60">
+          <div>// content</div>
+        </div>
+        <div class="md:col-span-10 space-y-5 text-base md:text-lg max-w-3xl">
+          <p>
+            <span class="bg-acid px-1">Działamy w branży od ponad 18 lat.</span> Nasz zespół tworzą zdolni programiści, graficy, copywriterzy, specjaliści od social media, fotografii, video oraz marketingu on-line.
+          </p>
+          <p>
+            Wybierając naszą agencję wybierasz obsługę na najwyższym poziomie, terminowość i pewność, że nie jesteś jednym z tysiąca klientów jak w innej firmie.
+          </p>
+          <p>
+            Nasz cel to stworzenie optymalnej widoczności w świecie on-line. Chcemy tę widoczność zamienić w Twój zysk.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-0 mt-16 border border-ink">
+        <div class="border-r border-ink p-5">
+          <div class="text-3xl font-bold">18+</div>
+          <div class="text-xs uppercase tracking-wider text-ink/60 mt-1">// lat na rynku</div>
+        </div>
+        <div class="border-r border-ink p-5">
+          <div class="text-3xl font-bold">06</div>
+          <div class="text-xs uppercase tracking-wider text-ink/60 mt-1">// obszarow uslug</div>
+        </div>
+        <div class="border-r border-ink p-5">
+          <div class="text-3xl font-bold">100%</div>
+          <div class="text-xs uppercase tracking-wider text-ink/60 mt-1">// dedykowane</div>
+        </div>
+        <div class="p-5">
+          <div class="text-3xl font-bold">∞</div>
+          <div class="text-xs uppercase tracking-wider text-ink/60 mt-1">// pomyslow</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="oferta" class="border-b border-ink">
+    <div class="max-w-6xl mx-auto px-6 md:px-8 py-16 md:py-24">
+
+      <div class="grid md:grid-cols-12 gap-8 mb-12">
+        <div class="md:col-span-2 text-xs uppercase tracking-wider text-ink/60">
+          <div>/section_02</div>
+        </div>
+        <div class="md:col-span-10">
+          <h2 class="hero-title text-4xl md:text-6xl">
+            co_robimy?
+          </h2>
+        </div>
+      </div>
+
+      <div class="border-t border-b border-ink reveal">
+        <a href="#kontakt" class="service-row block py-5 px-4 border-b border-ink grid md:grid-cols-12 gap-4 items-center cursor-pointer">
+          <div class="md:col-span-1 text-xs marker">[01]</div>
+          <div class="md:col-span-3 font-bold uppercase tracking-tight">Strony WWW</div>
+          <div class="md:col-span-7 text-sm">Nowoczesne strony zgodne z wytycznymi Google. RWD, szyte pod klientów. Modernizacja istniejących.</div>
+          <div class="md:col-span-1 text-right">→</div>
+        </a>
+
+        <a href="#kontakt" class="service-row block py-5 px-4 border-b border-ink grid md:grid-cols-12 gap-4 items-center cursor-pointer">
+          <div class="md:col-span-1 text-xs marker">[02]</div>
+          <div class="md:col-span-3 font-bold uppercase tracking-tight">Sklepy on-line</div>
+          <div class="md:col-span-7 text-sm">E-sklepy dopasowane pod Twojego klienta. Dedykowane rozwiązania — nic z półki.</div>
+          <div class="md:col-span-1 text-right">→</div>
+        </a>
+
+        <a href="#kontakt" class="service-row block py-5 px-4 border-b border-ink grid md:grid-cols-12 gap-4 items-center cursor-pointer">
+          <div class="md:col-span-1 text-xs marker">[03]</div>
+          <div class="md:col-span-3 font-bold uppercase tracking-tight">SEO &amp; Google Ads</div>
+          <div class="md:col-span-7 text-sm">Wysokie pozycje w wyszukiwarce. Pozycjonowanie długofalowe i szybkie reklamy sponsorowane.</div>
+          <div class="md:col-span-1 text-right">→</div>
+        </a>
+
+        <a href="#kontakt" class="service-row block py-5 px-4 border-b border-ink grid md:grid-cols-12 gap-4 items-center cursor-pointer">
+          <div class="md:col-span-1 text-xs marker">[04]</div>
+          <div class="md:col-span-3 font-bold uppercase tracking-tight">Social media</div>
+          <div class="md:col-span-7 text-sm">Prowadzenie Facebooka. Posty produktowe, branżowe, wizerunkowe. Naturalne zaangażowanie.</div>
+          <div class="md:col-span-1 text-right">→</div>
+        </a>
+
+        <a href="#kontakt" class="service-row block py-5 px-4 border-b border-ink grid md:grid-cols-12 gap-4 items-center cursor-pointer">
+          <div class="md:col-span-1 text-xs marker">[05]</div>
+          <div class="md:col-span-3 font-bold uppercase tracking-tight">Content marketing</div>
+          <div class="md:col-span-7 text-sm">Wartościowe, unikalne treści. Marketing szeptany jako Twój osobisty dział PR w sieci.</div>
+          <div class="md:col-span-1 text-right">→</div>
+        </a>
+
+        <a href="#kontakt" class="service-row block py-5 px-4 grid md:grid-cols-12 gap-4 items-center cursor-pointer">
+          <div class="md:col-span-1 text-xs marker">[06]</div>
+          <div class="md:col-span-3 font-bold uppercase tracking-tight">Video &amp; foto</div>
+          <div class="md:col-span-7 text-sm">Sesje zdjęciowe, drony, YouTube, prezentacje video. Pokażemy firmę z każdej strony.</div>
+          <div class="md:col-span-1 text-right">→</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt" class="bg-ink text-off border-b border-ink">
+    <div class="max-w-6xl mx-auto px-6 md:px-8 py-20 md:py-28">
+
+      <div class="grid md:grid-cols-12 gap-8 mb-12">
+        <div class="md:col-span-2 text-xs uppercase tracking-wider text-off/50">
+          <div>/section_03</div>
+        </div>
+        <div class="md:col-span-10">
+          <h2 class="hero-title text-5xl md:text-8xl text-acid">
+            zadzwon_teraz<span class="blink"></span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-8 reveal">
+        <div class="md:col-span-2 text-xs uppercase tracking-wider text-off/50">
+          <div>// channels</div>
+        </div>
+        <div class="md:col-span-10 space-y-1 max-w-2xl">
+
+          <a href="tel:+48509289649" class="block border-b border-off/20 py-5 grid grid-cols-3 gap-4 hover:bg-off/5 transition">
+            <div class="text-xs uppercase tracking-wider text-off/50">tel.</div>
+            <div class="col-span-2 text-2xl md:text-3xl font-bold tracking-tight">509 289 649</div>
+          </a>
+
+          <a href="mailto:dorota@e-kreacja.com.pl" class="block border-b border-off/20 py-5 grid grid-cols-3 gap-4 hover:bg-off/5 transition">
+            <div class="text-xs uppercase tracking-wider text-off/50">mail.</div>
+            <div class="col-span-2 text-lg md:text-xl font-bold break-all">dorota@e-kreacja.com.pl</div>
+          </a>
+
+          <div class="block border-b border-off/20 py-5 grid grid-cols-3 gap-4">
+            <div class="text-xs uppercase tracking-wider text-off/50">addr.</div>
+            <div class="col-span-2 text-lg md:text-xl">Jelcz-Laskowice, ul. Oławska 70/14</div>
+          </div>
+
+          <a href="https://www.facebook.com/Ekreacja/" target="_blank" rel="noopener" class="block py-5 grid grid-cols-3 gap-4 hover:bg-off/5 transition">
+            <div class="text-xs uppercase tracking-wider text-off/50">fb.</div>
+            <div class="col-span-2 text-lg md:text-xl font-bold underline-thick">facebook.com/Ekreacja</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="max-w-6xl mx-auto px-6 md:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs uppercase tracking-wider text-ink/60">
+      <div>// ekreacja_v18 — agencja kreatywna od 2007</div>
+      <div>© MMXXVI — wszystkie prawa zastrzeżone</div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>

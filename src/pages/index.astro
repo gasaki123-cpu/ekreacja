@@ -1,0 +1,541 @@
+---
+const styles = [
+  { slug: 'glass',     num: '01', name: 'Glass &amp; gradient' },
+  { slug: 'editorial', num: '02', name: 'Editorial magazine' },
+  { slug: 'brutalist', num: '03', name: 'Brutalist mono' },
+  { slug: 'warm',      num: '04', name: 'Warm &amp; organic' },
+];
+---
+
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ekreacja — agencja kreatywna. Wybierz styl strony z 4 koncepcji." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Ekreacja — galeria stylów</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <script is:inline>
+    (function() {
+      var p = window.location.pathname;
+      if (p === '/login' || p === '/login/') return;
+      try { if (localStorage.getItem('ekreacja_auth') === 'ok') return; } catch (e) {}
+      document.documentElement.style.visibility = 'hidden';
+      window.location.replace('/login');
+    })();
+  </script>
+
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'system-ui', 'sans-serif'],
+            mono: ['Geist Mono', 'monospace'],
+            serif: ['Instrument Serif', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; background: #07070A; }
+    body {
+      font-family: 'Geist', system-ui, sans-serif;
+      color: #EDEDF2;
+      background: #07070A;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+    body.modal-open { overflow: hidden; }
+    ::selection { background: rgba(149, 57, 254, 0.35); color: white; }
+
+    .eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .preview-card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #0F0F14;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.5s, box-shadow 0.5s;
+      cursor: pointer;
+      display: block;
+    }
+    .preview-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,0.55);
+    }
+
+    .frame-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #0A0A0E;
+    }
+    .frame-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1280px;
+      border: 0;
+      transform-origin: top left;
+      pointer-events: none;
+    }
+    .frame-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 55%, rgba(7,7,10,0.5) 100%);
+      pointer-events: none;
+      transition: background 0.4s;
+    }
+    .preview-card:hover .frame-wrap::after {
+      background: linear-gradient(to bottom, transparent 35%, rgba(7,7,10,0.6) 100%);
+    }
+
+    .meta {
+      padding: 22px 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.04em;
+    }
+
+    .card-actions {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 5;
+      display: flex;
+      gap: 6px;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .preview-card:hover .card-actions { opacity: 1; transform: translateY(0); }
+
+    .action-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(8, 8, 12, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.14);
+      font-size: 11px;
+      font-weight: 500;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .action-pill:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
+
+    .pulse-dot { position: relative; display: inline-flex; width: 6px; height: 6px; }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #2AB270;
+      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    .pulse-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #2AB270; }
+    @keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+
+    .stagger > * { opacity: 0; transform: translateY(20px); animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.18s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.3s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.42s; }
+    .stagger > *:nth-child(5) { animation-delay: 0.55s; }
+    .stagger > *:nth-child(6) { animation-delay: 0.7s; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    .bg-glow {
+      position: fixed;
+      pointer-events: none;
+      z-index: -1;
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.18;
+    }
+
+    #modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(7,7,10,0.92);
+      backdrop-filter: blur(14px);
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #modal.open { display: flex; opacity: 1; }
+    #modal .modal-inner { width: 100%; height: 100%; display: flex; flex-direction: column; }
+    #modal .modal-bar {
+      flex-shrink: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(7,7,10,0.85);
+    }
+    #modal .modal-frame { flex: 1; position: relative; overflow: hidden; }
+    #modal iframe { width: 100%; height: 100%; border: 0; background: white; }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+
+    .modal-nav { display: flex; gap: 6px; }
+    .modal-title { font-size: 13px; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 8px; }
+    .modal-title .num { font-family: 'Geist Mono', monospace; color: rgba(255,255,255,0.45); }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-glow" style="background:#9539FE; top:-200px; left:-200px;"></div>
+  <div class="bg-glow" style="background:#00BDE9; bottom:-300px; right:-200px; opacity:0.12;"></div>
+
+  <header class="max-w-6xl mx-auto px-6 md:px-10 pt-14 md:pt-20 stagger">
+    <div class="flex items-center justify-between mb-16">
+      <div class="flex items-center gap-2.5">
+        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#9539FE] via-[#FF3839] to-[#00BDE9]"></div>
+        <span class="font-medium tracking-tight">Ekreacja</span>
+        <span class="text-white/30 font-mono text-xs ml-2">/ galeria stylów</span>
+      </div>
+      <span class="eyebrow flex items-center gap-2.5">
+        <span class="pulse-dot"></span>
+        4 koncepcje
+      </span>
+    </div>
+
+    <div class="max-w-3xl">
+      <div class="eyebrow mb-6">Krok 1 · Wybierz kierunek</div>
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-medium tracking-[-0.035em] leading-[0.95]">
+        Cztery <span class="font-serif italic font-normal text-white/90">style</span> do wyboru.
+      </h1>
+      <p class="mt-8 text-lg md:text-xl text-white/60 leading-relaxed max-w-2xl">
+        Każdy ma tę samą treść — <span class="text-white/85">Kim jesteśmy</span>, <span class="text-white/85">Co robimy</span>, <span class="text-white/85">Kontakt</span> — ale zupełnie inny mood. <span class="text-white/85">Kliknij w kartę</span>, żeby zobaczyć styl na całym ekranie.
+      </p>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 md:px-10 mt-16 md:mt-20 pb-24">
+    <div class="grid md:grid-cols-2 gap-6 md:gap-8 stagger">
+
+      <!-- 01 GLASS -->
+      <div class="preview-card" data-style="/glass" data-name="Glass &amp; gradient" data-num="01">
+        <div class="card-actions">
+          <span class="action-pill" data-open="/glass" data-name="Glass &amp; gradient" data-num="01">
+            Zobacz <i data-lucide="maximize-2" class="w-3 h-3"></i>
+          </span>
+          <a class="action-pill" href="/glass" target="_blank" onclick="event.stopPropagation();">
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+        </div>
+        <div class="frame-wrap">
+          <iframe src="/glass" loading="lazy" title="Glass preview" scrolling="no"></iframe>
+        </div>
+        <div class="meta">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="eyebrow mb-1.5">01 · ciemny / modern saas</div>
+              <h2 class="text-2xl font-medium tracking-tight">
+                Glass &amp; <span class="font-serif italic font-normal">gradient</span>
+              </h2>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-5 h-5 text-white/40 mt-1"></i>
+          </div>
+          <p class="text-sm text-white/55 leading-relaxed mb-4">
+            Animowany gradient mesh, glass cards, ciemna paleta. Inspiracja: Linear, Vercel, Stripe.
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="chip">Geist</span>
+            <span class="chip">Instrument Serif</span>
+            <span class="chip">dark mode</span>
+            <span class="chip">animated mesh</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 EDITORIAL -->
+      <div class="preview-card" data-style="/editorial" data-name="Editorial magazine" data-num="02" style="background:#F5F1E8;">
+        <div class="card-actions">
+          <span class="action-pill" style="background:rgba(245,241,232,0.92);color:#1A1614;border-color:rgba(26,22,20,0.15);" data-open="/editorial" data-name="Editorial magazine" data-num="02">
+            Zobacz <i data-lucide="maximize-2" class="w-3 h-3"></i>
+          </span>
+          <a class="action-pill" style="background:rgba(245,241,232,0.92);color:#1A1614;border-color:rgba(26,22,20,0.15);" href="/editorial" target="_blank" onclick="event.stopPropagation();">
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+        </div>
+        <div class="frame-wrap" style="background:#F5F1E8;">
+          <iframe src="/editorial" loading="lazy" title="Editorial preview" scrolling="no"></iframe>
+        </div>
+        <div class="meta" style="border-top-color:rgba(26,22,20,0.08);background:linear-gradient(180deg,rgba(0,0,0,0.02),transparent);">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="eyebrow mb-1.5" style="color:#5C534A;">02 · editorial / papier</div>
+              <h2 class="text-2xl font-medium tracking-tight" style="color:#1A1614;font-family:'Fraunces',serif;font-weight:300;">
+                Editorial <em style="color:#D97757;">magazine</em>
+              </h2>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-5 h-5 mt-1" style="color:#5C534A;"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-4" style="color:#5C534A;">
+            Papierowe tło, duża serifowa typografia, asymetryczny grid. Inspiracja: Aesop, The Browser Company.
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="chip" style="background:rgba(26,22,20,0.04);border-color:rgba(26,22,20,0.08);color:#5C534A;">Fraunces</span>
+            <span class="chip" style="background:rgba(26,22,20,0.04);border-color:rgba(26,22,20,0.08);color:#5C534A;">Newsreader</span>
+            <span class="chip" style="background:rgba(26,22,20,0.04);border-color:rgba(26,22,20,0.08);color:#5C534A;">cream</span>
+            <span class="chip" style="background:rgba(26,22,20,0.04);border-color:rgba(26,22,20,0.08);color:#5C534A;">terracotta</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 BRUTALIST -->
+      <div class="preview-card" data-style="/brutalist" data-name="Brutalist mono" data-num="03" style="background:#FAFAF7;">
+        <div class="card-actions">
+          <span class="action-pill" style="background:#0A0A0A;color:#FAFAF7;border-color:#0A0A0A;border-radius:0;" data-open="/brutalist" data-name="Brutalist mono" data-num="03">
+            [zobacz]
+          </span>
+          <a class="action-pill" style="background:#0A0A0A;color:#FAFAF7;border-color:#0A0A0A;border-radius:0;" href="/brutalist" target="_blank" onclick="event.stopPropagation();">
+            [↗]
+          </a>
+        </div>
+        <div class="frame-wrap" style="background:#FAFAF7;">
+          <iframe src="/brutalist" loading="lazy" title="Brutalist preview" scrolling="no"></iframe>
+        </div>
+        <div class="meta" style="border-top-color:#0A0A0A;background:#FAFAF7;">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="eyebrow mb-1.5" style="color:#0A0A0A;font-family:'Geist Mono',monospace;">/03 · brutalist / mono</div>
+              <h2 class="text-2xl font-bold tracking-tight" style="color:#0A0A0A;font-family:'JetBrains Mono',monospace;">
+                BRUTALIST.
+              </h2>
+            </div>
+            <span style="color:#0A0A0A;font-family:'JetBrains Mono',monospace;font-size:14px;">[→]</span>
+          </div>
+          <p class="text-sm leading-relaxed mb-4" style="color:#0A0A0A;font-family:'JetBrains Mono',monospace;">
+            Monospace, ostre granice, raw aesthetic z acid-green accentem. Inspiracja: rauno.me, paco.me.
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="chip" style="background:#0A0A0A;border-color:#0A0A0A;color:#FAFAF7;border-radius:0;">jetbrains-mono</span>
+            <span class="chip" style="background:#0A0A0A;border-color:#0A0A0A;color:#FAFAF7;border-radius:0;">sharp</span>
+            <span class="chip" style="background:#0A0A0A;border-color:#0A0A0A;color:#FAFAF7;border-radius:0;">acid-green</span>
+            <span class="chip" style="background:#0A0A0A;border-color:#0A0A0A;color:#FAFAF7;border-radius:0;">marquee</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 WARM -->
+      <div class="preview-card" data-style="/warm" data-name="Warm &amp; organic" data-num="04" style="background:#FFF6EC;">
+        <div class="card-actions">
+          <span class="action-pill" style="background:rgba(255,255,255,0.88);color:#3A2A20;border-color:rgba(58,42,32,0.15);" data-open="/warm" data-name="Warm &amp; organic" data-num="04">
+            Zobacz <i data-lucide="maximize-2" class="w-3 h-3"></i>
+          </span>
+          <a class="action-pill" style="background:rgba(255,255,255,0.88);color:#3A2A20;border-color:rgba(58,42,32,0.15);" href="/warm" target="_blank" onclick="event.stopPropagation();">
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+        </div>
+        <div class="frame-wrap" style="background:#FFF6EC;">
+          <iframe src="/warm" loading="lazy" title="Warm preview" scrolling="no"></iframe>
+        </div>
+        <div class="meta" style="border-top-color:rgba(58,42,32,0.08);background:linear-gradient(180deg,rgba(255,139,110,0.04),transparent);">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <div class="eyebrow mb-1.5" style="color:#C2543A;">04 · warm / friendly</div>
+              <h2 class="text-2xl font-medium tracking-tight" style="color:#3A2A20;font-family:'Caladea',serif;">
+                Warm &amp; <em style="color:#C2543A;">organic</em>
+              </h2>
+            </div>
+            <i data-lucide="arrow-up-right" class="w-5 h-5 mt-1" style="color:#C2543A;"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-4" style="color:#3A2A20;opacity:0.7;">
+            Peachowy gradient, organiczne kształty, friendly serif. Inspiracja: Stripe Press, Notion.
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="chip" style="background:rgba(255,139,110,0.1);border-color:rgba(194,84,58,0.15);color:#3A2A20;">Caladea</span>
+            <span class="chip" style="background:rgba(255,139,110,0.1);border-color:rgba(194,84,58,0.15);color:#3A2A20;">Familjen Grotesk</span>
+            <span class="chip" style="background:rgba(255,139,110,0.1);border-color:rgba(194,84,58,0.15);color:#3A2A20;">peach</span>
+            <span class="chip" style="background:rgba(255,139,110,0.1);border-color:rgba(194,84,58,0.15);color:#3A2A20;">soft cards</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-20 grid md:grid-cols-2 gap-6 border-t border-white/5 pt-10">
+      <div class="flex items-start gap-3 text-sm text-white/55">
+        <i data-lucide="info" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+        <div>
+          <div class="text-white/85 mb-1">Każdy styl można jeszcze dopracować</div>
+          <div>Wybór kierunku to pierwszy krok — zmiana kolorów, fontów czy elementów to drobne poprawki.</div>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 text-sm text-white/55">
+        <i data-lucide="keyboard" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+        <div>
+          <div class="text-white/85 mb-1">Klawisze w podglądzie</div>
+          <div class="font-mono text-xs text-white/45">← → przełączanie · ESC zamknięcie</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="modal" role="dialog" aria-modal="true">
+    <div class="modal-inner">
+      <div class="modal-bar">
+        <div class="modal-title">
+          <span class="num" id="modalNum">01</span>
+          <span id="modalName">Glass &amp; gradient</span>
+        </div>
+        <div class="modal-nav">
+          <button class="pill-btn" id="prevBtn" title="Poprzedni styl">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+          </button>
+          <button class="pill-btn" id="nextBtn" title="Następny styl">
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+          <a class="pill-btn" id="openTab" target="_blank" title="Otwórz w nowej karcie">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+          <button class="pill-btn" id="closeBtn" title="Zamknij (ESC)">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-frame">
+        <iframe id="modalIframe" src="about:blank" title="Style preview"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    lucide.createIcons();
+
+    function scaleFrames() {
+      document.querySelectorAll('.frame-wrap').forEach(wrap => {
+        const w = wrap.clientWidth;
+        const scale = w / 1280;
+        const iframe = wrap.querySelector('iframe');
+        if (iframe) {
+          iframe.style.transform = `scale(${scale})`;
+          iframe.style.height = (wrap.clientHeight / scale) + 'px';
+        }
+      });
+    }
+    window.addEventListener('load', scaleFrames);
+    window.addEventListener('resize', scaleFrames);
+
+    const styles = [
+      { path: '/glass',     name: 'Glass & gradient',   num: '01' },
+      { path: '/editorial', name: 'Editorial magazine', num: '02' },
+      { path: '/brutalist', name: 'Brutalist mono',     num: '03' },
+      { path: '/warm',      name: 'Warm & organic',     num: '04' },
+    ];
+    let currentIdx = 0;
+    const modal = document.getElementById('modal');
+    const modalIframe = document.getElementById('modalIframe');
+    const modalName = document.getElementById('modalName');
+    const modalNum = document.getElementById('modalNum');
+    const openTab = document.getElementById('openTab');
+
+    function openModal(path) {
+      currentIdx = styles.findIndex(s => s.path === path);
+      if (currentIdx < 0) currentIdx = 0;
+      renderModal();
+      modal.classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+    function renderModal() {
+      const s = styles[currentIdx];
+      modalIframe.src = s.path;
+      modalName.textContent = s.name;
+      modalNum.textContent = s.num;
+      openTab.href = s.path;
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      setTimeout(() => { modalIframe.src = 'about:blank'; }, 300);
+    }
+    function nextStyle() { currentIdx = (currentIdx + 1) % styles.length; renderModal(); }
+    function prevStyle() { currentIdx = (currentIdx - 1 + styles.length) % styles.length; renderModal(); }
+
+    document.querySelectorAll('.preview-card').forEach(card => {
+      card.addEventListener('click', () => openModal(card.dataset.style));
+    });
+    document.querySelectorAll('[data-open]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal(el.dataset.open);
+      });
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', prevStyle);
+    document.getElementById('nextBtn').addEventListener('click', nextStyle);
+    document.getElementById('closeBtn').addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowRight') nextStyle();
+      if (e.key === 'ArrowLeft') prevStyle();
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  </script>
+</body>
+</html>

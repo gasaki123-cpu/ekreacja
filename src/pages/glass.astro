@@ -1,0 +1,433 @@
+---
+---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Agencja kreatywna Ekreacja — 18 lat doświadczenia. Marketing, strony WWW, sklepy on-line, SEO, social media, video." />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Ekreacja — Agencja kreatywna</title>
+
+  <script is:inline>
+    (function() {
+      var p = window.location.pathname;
+      if (p === '/login' || p === '/login/') return;
+      try { if (localStorage.getItem('ekreacja_auth') === 'ok') return; } catch (e) {}
+      document.documentElement.style.visibility = 'hidden';
+      window.location.replace('/login');
+    })();
+  </script>
+
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'system-ui', 'sans-serif'],
+            mono: ['Geist Mono', 'monospace'],
+            serif: ['Instrument Serif', 'serif'],
+          },
+          colors: {
+            ink: { 900: '#08080C', 800: '#0D0D14' },
+            brand: {
+              violet: '#9539FE',
+              red: '#FF3839',
+              green: '#2AB270',
+              blue: '#00BDE9',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; background: #08080C; }
+    body {
+      font-family: 'Geist', system-ui, sans-serif;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      color: #EDEDF2;
+      background: #08080C;
+      overflow-x: hidden;
+    }
+    ::selection { background: rgba(149, 57, 254, 0.35); color: white; }
+
+    .mesh { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      mix-blend-mode: screen;
+      opacity: 0.45;
+      will-change: transform;
+    }
+    .blob-1 { width: 560px; height: 560px; background: #9539FE; top: -10%; left: -8%; animation: float-1 24s ease-in-out infinite; }
+    .blob-2 { width: 520px; height: 520px; background: #00BDE9; top: 20%; right: -10%; animation: float-2 28s ease-in-out infinite; }
+    .blob-3 { width: 440px; height: 440px; background: #FF3839; bottom: -10%; left: 30%; animation: float-3 30s ease-in-out infinite; opacity: 0.35; }
+    @keyframes float-1 { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(80px, 60px) scale(1.08); } }
+    @keyframes float-2 { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-90px, 50px) scale(1.06); } }
+    @keyframes float-3 { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(70px, -80px) scale(1.1); } }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+    }
+    .glass-hover {
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  background 0.4s, border-color 0.4s;
+    }
+    .glass-hover:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.13);
+    }
+
+    .nav-glass {
+      background: rgba(8, 8, 12, 0.55);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    .stagger > * { opacity: 0; transform: translateY(20px); animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.3s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.5s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.7s; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    .hairline {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    }
+
+    .mobile-menu { transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .mobile-menu.open { transform: translateY(0); }
+
+    .eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .back-link {
+      position: fixed;
+      top: 80px;
+      left: 24px;
+      z-index: 60;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s;
+    }
+    .back-link:hover { color: white; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  </style>
+</head>
+
+<body class="font-sans bg-ink-900 text-white">
+
+  <a href="/" class="back-link">← Wszystkie style</a>
+
+  <nav class="nav-glass fixed top-0 inset-x-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-2.5">
+        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-brand-violet via-brand-red to-brand-blue"></div>
+        <span class="font-medium tracking-tight text-[15px]">Ekreacja</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-9 text-sm text-white/70">
+        <a href="#onas" class="hover:text-white transition">O nas</a>
+        <a href="#oferta" class="hover:text-white transition">Co robimy</a>
+        <a href="#kontakt" class="hover:text-white transition">Kontakt</a>
+      </div>
+
+      <button id="menuBtn" class="md:hidden w-9 h-9 grid place-items-center rounded-full glass">
+        <i data-lucide="menu" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu md:hidden absolute top-16 inset-x-0 nav-glass px-6 py-8 flex flex-col gap-5 text-white/80">
+      <a href="#onas">O nas</a>
+      <a href="#oferta">Co robimy</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </nav>
+
+  <section id="top" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+    <div class="mesh">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-6 md:px-10 py-32 w-full stagger">
+
+      <div class="flex items-center gap-3 mb-10">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
+        </span>
+        <span class="eyebrow">Agencja kreatywna · od 2007</span>
+      </div>
+
+      <h1 class="text-[14vw] md:text-[8.5vw] lg:text-[7.5rem] leading-[0.92] font-medium tracking-[-0.04em] max-w-4xl">
+        Agencja
+        <span class="font-serif italic font-normal">kreatywna.</span>
+      </h1>
+
+      <p class="mt-10 max-w-xl text-lg md:text-xl text-white/65 leading-relaxed">
+        Od 18 lat tworzymy widoczność, która zamienia się w Twój zysk.
+      </p>
+
+      <div class="mt-12">
+        <a href="#oferta" class="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition group">
+          <span>Zobacz co robimy</span>
+          <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-0.5 transition"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="hairline max-w-6xl mx-auto"></div>
+
+  <section id="onas" class="relative py-32 md:py-44">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
+
+        <div class="lg:col-span-5 reveal">
+          <div class="eyebrow mb-6">O nas</div>
+          <h2 class="text-5xl md:text-6xl font-medium tracking-tight leading-[1]">
+            Kim
+            <span class="font-serif italic font-normal">jesteśmy?</span>
+          </h2>
+        </div>
+
+        <div class="lg:col-span-7 reveal">
+          <div class="space-y-6 text-white/70 text-lg leading-relaxed">
+            <p>
+              Działamy w branży od ponad <span class="text-white">18 lat</span>. Nasz zespół tworzą
+              zdolni programiści, graficy, copywriterzy, specjaliści od social media,
+              fotografii, video oraz marketingu on-line.
+            </p>
+            <p>
+              Wybierając naszą agencję wybierasz obsługę na najwyższym poziomie,
+              terminowość i pewność, że nie jesteś jednym z tysiąca klientów
+              jak w innej firmie.
+            </p>
+            <p>
+              Nasz cel to stworzenie optymalnej widoczności w świecie on-line.
+              Chcemy tę widoczność zamienić w Twój zysk.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hairline max-w-6xl mx-auto"></div>
+
+  <section id="oferta" class="relative py-32 md:py-44 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-[400px] h-[400px] rounded-full bg-brand-violet/8 blur-[120px] pointer-events-none"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 md:px-10">
+
+      <div class="mb-16 reveal">
+        <div class="eyebrow mb-6">Co robimy</div>
+        <h2 class="text-5xl md:text-6xl font-medium tracking-tight leading-[1] max-w-2xl">
+          Sześć obszarów,
+          <span class="font-serif italic font-normal">jeden cel.</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <div class="glass glass-hover rounded-3xl p-7 reveal">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-blue/25 to-transparent border border-white/10 grid place-items-center mb-10">
+            <i data-lucide="layout-template" class="w-5 h-5 text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-2">Strony WWW</h3>
+          <p class="text-sm text-white/55 leading-relaxed">
+            Nowoczesne strony zgodne z wytycznymi Google. Responsywne, szyte pod Twoich klientów. Także modernizacja istniejących.
+          </p>
+        </div>
+
+        <div class="glass glass-hover rounded-3xl p-7 reveal">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-red/25 to-transparent border border-white/10 grid place-items-center mb-10">
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-red"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-2">Sklepy on-line</h3>
+          <p class="text-sm text-white/55 leading-relaxed">
+            Budujemy e-sklepy idealnie dopasowane pod Twojego klienta. Dedykowane rozwiązania — nic z półki.
+          </p>
+        </div>
+
+        <div class="glass glass-hover rounded-3xl p-7 reveal">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-violet/25 to-transparent border border-white/10 grid place-items-center mb-10">
+            <i data-lucide="search" class="w-5 h-5 text-brand-violet"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-2">SEO &amp; Google Ads</h3>
+          <p class="text-sm text-white/55 leading-relaxed">
+            Wysokie pozycje w wynikach wyszukiwania. Pozycjonowanie długofalowe i szybkie reklamy sponsorowane.
+          </p>
+        </div>
+
+        <div class="glass glass-hover rounded-3xl p-7 reveal">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-blue/25 to-transparent border border-white/10 grid place-items-center mb-10">
+            <i data-lucide="users" class="w-5 h-5 text-brand-blue"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-2">Social media</h3>
+          <p class="text-sm text-white/55 leading-relaxed">
+            Prowadzenie profilu Facebook. Posty produktowe, branżowe, wizerunkowe. Naturalne zaangażowanie i konwersje.
+          </p>
+        </div>
+
+        <div class="glass glass-hover rounded-3xl p-7 reveal">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-green/25 to-transparent border border-white/10 grid place-items-center mb-10">
+            <i data-lucide="file-text" class="w-5 h-5 text-brand-green"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-2">Content marketing</h3>
+          <p class="text-sm text-white/55 leading-relaxed">
+            Wartościowe, unikalne treści. Marketing szeptany jako Twój osobisty dział PR w sieci.
+          </p>
+        </div>
+
+        <div class="glass glass-hover rounded-3xl p-7 reveal">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-red/25 to-transparent border border-white/10 grid place-items-center mb-10">
+            <i data-lucide="film" class="w-5 h-5 text-brand-red"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-2">Video &amp; foto</h3>
+          <p class="text-sm text-white/55 leading-relaxed">
+            Sesje zdjęciowe, ujęcia z drona, prezentacje video, YouTube. Pokażemy Twoją firmę z każdej strony.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="hairline max-w-6xl mx-auto"></div>
+
+  <section id="kontakt" class="relative py-32 md:py-44 overflow-hidden">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-brand-violet/10 blur-[140px] pointer-events-none"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 md:px-10 text-center">
+
+      <div class="reveal">
+        <div class="eyebrow mb-6">Kontakt</div>
+        <h2 class="text-5xl md:text-7xl font-medium tracking-tight leading-[0.95]">
+          Zadzwoń
+          <span class="font-serif italic font-normal">teraz.</span>
+        </h2>
+        <p class="text-white/55 text-lg mt-8 max-w-md mx-auto">
+          Tworzymy z pasją. Powiedz nam o swoim projekcie.
+        </p>
+      </div>
+
+      <div class="mt-16 grid sm:grid-cols-3 gap-4 max-w-3xl mx-auto reveal">
+        <a href="tel:+48509289649" class="glass glass-hover rounded-2xl p-6 flex flex-col items-center gap-3 group">
+          <div class="w-11 h-11 rounded-xl bg-white/5 grid place-items-center">
+            <i data-lucide="phone" class="w-4 h-4 text-brand-green"></i>
+          </div>
+          <div class="text-xs text-white/40 font-mono uppercase tracking-wider">Telefon</div>
+          <div class="font-medium">509 289 649</div>
+        </a>
+
+        <a href="mailto:dorota@e-kreacja.com.pl" class="glass glass-hover rounded-2xl p-6 flex flex-col items-center gap-3 group">
+          <div class="w-11 h-11 rounded-xl bg-white/5 grid place-items-center">
+            <i data-lucide="mail" class="w-4 h-4 text-brand-blue"></i>
+          </div>
+          <div class="text-xs text-white/40 font-mono uppercase tracking-wider">Email</div>
+          <div class="font-medium text-sm">dorota@e-kreacja.com.pl</div>
+        </a>
+
+        <div class="glass rounded-2xl p-6 flex flex-col items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-white/5 grid place-items-center">
+            <i data-lucide="map-pin" class="w-4 h-4 text-brand-violet"></i>
+          </div>
+          <div class="text-xs text-white/40 font-mono uppercase tracking-wider">Adres</div>
+          <div class="font-medium text-sm">Jelcz-Laskowice<br/>ul. Oławska 70/14</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-gradient-to-br from-brand-violet via-brand-red to-brand-blue"></div>
+        <span class="font-medium tracking-tight text-sm">Ekreacja</span>
+        <span class="text-white/30 text-sm font-mono ml-1">·</span>
+        <span class="text-white/40 text-sm">od 2007</span>
+      </div>
+
+      <div class="flex items-center gap-4 text-sm">
+        <a href="https://www.facebook.com/Ekreacja/" target="_blank" rel="noopener"
+           class="w-9 h-9 rounded-full glass grid place-items-center hover:bg-white/10 transition">
+          <i data-lucide="facebook" class="w-4 h-4"></i>
+        </a>
+        <span class="text-white/30 font-mono text-xs">© 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    lucide.createIcons();
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      const isOpen = mobileMenu.classList.contains('open');
+      menuBtn.innerHTML = isOpen
+        ? '<i data-lucide="x" class="w-4 h-4"></i>'
+        : '<i data-lucide="menu" class="w-4 h-4"></i>';
+      lucide.createIcons();
+    });
+    document.querySelectorAll('#mobileMenu a').forEach(a =>
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuBtn.innerHTML = '<i data-lucide="menu" class="w-4 h-4"></i>';
+        lucide.createIcons();
+      })
+    );
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>

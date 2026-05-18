@@ -1,0 +1,436 @@
+---
+---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Ekreacja — Warm</title>
+
+  <script is:inline>
+    (function() {
+      var p = window.location.pathname;
+      if (p === '/login' || p === '/login/') return;
+      try { if (localStorage.getItem('ekreacja_auth') === 'ok') return; } catch (e) {}
+      document.documentElement.style.visibility = 'hidden';
+      window.location.replace('/login');
+    })();
+  </script>
+
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Caladea:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Familjen Grotesk', 'system-ui', 'sans-serif'],
+            display: ['Caladea', 'serif'],
+          },
+          colors: {
+            cream: '#FFF6EC',
+            peach: '#FFDFC8',
+            coral: '#FF8B6E',
+            terracotta: '#C2543A',
+            sage: '#7A9275',
+            cocoa: '#3A2A20',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Familjen Grotesk', system-ui, sans-serif;
+      color: #3A2A20;
+      background:
+        radial-gradient(at 15% 10%, #FFDFC8 0%, transparent 45%),
+        radial-gradient(at 85% 20%, #FFE6D1 0%, transparent 50%),
+        radial-gradient(at 50% 90%, #FFD4BD 0%, transparent 55%),
+        #FFF6EC;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: #FF8B6E; color: white; }
+
+    .display { font-family: 'Caladea', serif; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    .stagger > * { opacity: 0; transform: translateY(20px); animation: rise 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.3s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.5s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.7s; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    .blob-shape {
+      position: absolute;
+      pointer-events: none;
+      filter: blur(2px);
+    }
+    .blob-1 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, #FF8B6E55 0%, transparent 70%);
+      top: -60px; right: -80px;
+      border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+      animation: morph 14s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, #7A927555 0%, transparent 70%);
+      bottom: -50px; left: -60px;
+      border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+      animation: morph2 16s ease-in-out infinite;
+    }
+    @keyframes morph {
+      0%, 100% { border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%; transform: translate(0,0) rotate(0deg); }
+      50% { border-radius: 50% 50% 60% 40% / 40% 50% 50% 60%; transform: translate(20px, 15px) rotate(15deg); }
+    }
+    @keyframes morph2 {
+      0%, 100% { border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; transform: translate(0,0) rotate(0deg); }
+      50% { border-radius: 50% 40% 60% 50% / 50% 60% 40% 60%; transform: translate(-15px, -20px) rotate(-10deg); }
+    }
+
+    .soft-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 12px 40px -12px rgba(194, 84, 58, 0.15);
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s, border-color 0.5s;
+    }
+    .soft-card:hover {
+      transform: translateY(-6px) rotate(-0.5deg);
+      box-shadow: 0 30px 60px -20px rgba(194, 84, 58, 0.25);
+      border-color: rgba(255, 139, 110, 0.4);
+    }
+
+    .nav-soft {
+      background: rgba(255, 246, 236, 0.7);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-bottom: 1px solid rgba(58, 42, 32, 0.06);
+    }
+
+    .underline-soft {
+      background-image: linear-gradient(transparent calc(100% - 2px), #FF8B6E 2px);
+      background-size: 0% 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .underline-soft:hover { background-size: 100% 100%; }
+
+    .squiggle {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8'%3E%3Cpath d='M0 4 Q 10 0 20 4 T 40 4 T 60 4 T 80 4' stroke='%23FF8B6E' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: repeat-x;
+      background-position: bottom;
+      padding-bottom: 12px;
+    }
+
+    .eyebrow {
+      font-family: 'Caladea', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: #C2543A;
+    }
+
+    .icon-pill { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+    .soft-card:hover .icon-pill { transform: rotate(-8deg) scale(1.08); }
+
+    .back-link {
+      position: fixed;
+      top: 22px;
+      left: 22px;
+      z-index: 60;
+      font-size: 13px;
+      color: #3A2A20;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(58, 42, 32, 0.1);
+      transition: all 0.3s;
+    }
+    .back-link:hover {
+      background: white;
+      box-shadow: 0 8px 20px -8px rgba(194, 84, 58, 0.25);
+    }
+
+    .mobile-menu { transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+    .mobile-menu.open { transform: translateY(0); }
+  </style>
+</head>
+
+<body>
+
+  <a href="/" class="back-link">← Wszystkie style</a>
+
+  <nav class="nav-soft fixed top-0 inset-x-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-coral to-terracotta shadow-sm"></div>
+        <span class="display text-xl tracking-tight">Ekreacja</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-9 text-sm">
+        <a href="#onas" class="underline-soft pb-1">O nas</a>
+        <a href="#oferta" class="underline-soft pb-1">Co robimy</a>
+        <a href="#kontakt" class="underline-soft pb-1">Kontakt</a>
+      </div>
+
+      <button id="menuBtn" class="md:hidden w-9 h-9 grid place-items-center rounded-full bg-white/60">
+        <i data-lucide="menu" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div id="mobileMenu" class="mobile-menu md:hidden absolute top-16 inset-x-0 nav-soft px-6 py-8 flex flex-col gap-5">
+      <a href="#onas">O nas</a>
+      <a href="#oferta">Co robimy</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </nav>
+
+  <section id="top" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+    <div class="blob-shape blob-1"></div>
+    <div class="blob-shape blob-2"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 md:px-10 py-24 w-full stagger">
+
+      <div class="eyebrow mb-8 flex items-center gap-3">
+        <svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 0 L13 9 L22 11 L13 13 L11 22 L9 13 L0 11 L9 9 Z" fill="#FF8B6E"/></svg>
+        Agencja kreatywna od 2007
+      </div>
+
+      <h1 class="display text-[13vw] md:text-[8.5vw] lg:text-[7.5rem] leading-[0.95] tracking-[-0.02em] max-w-4xl">
+        Tworzymy <em class="text-terracotta">widoczność,</em>
+        <br />która sprzedaje.
+      </h1>
+
+      <p class="mt-10 max-w-xl text-xl md:text-2xl text-cocoa/75 leading-relaxed">
+        Osiemnaście lat doświadczenia w&nbsp;tworzeniu stron, sklepów, treści i&nbsp;reklam, które pracują na Twój sukces.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-4">
+        <a href="#oferta"
+           class="inline-flex items-center gap-2.5 px-7 py-4 rounded-full bg-cocoa text-cream font-medium hover:bg-terracotta transition shadow-lg shadow-terracotta/20">
+          Zobacz co robimy
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#kontakt"
+           class="inline-flex items-center gap-2.5 px-7 py-4 rounded-full bg-white/70 backdrop-blur text-cocoa font-medium hover:bg-white transition border border-cocoa/10">
+          Porozmawiajmy
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="onas" class="relative py-24 md:py-36">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <div class="lg:col-span-5 reveal">
+          <div class="relative">
+            <div class="soft-card rounded-[2.5rem] p-10 md:p-12">
+              <div class="display italic text-4xl md:text-5xl leading-tight text-terracotta">
+                „Tworzymy z&nbsp;pasją."
+              </div>
+              <div class="mt-8 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-coral to-terracotta"></div>
+                <div>
+                  <div class="text-sm font-medium">Dorota</div>
+                  <div class="text-xs text-cocoa/60">Założycielka, Ekreacja</div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute -top-6 -right-6 bg-coral text-white px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider rotate-[8deg] shadow-lg">
+              ★ od 2007
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 reveal">
+          <div class="eyebrow mb-4">O nas</div>
+          <h2 class="display text-5xl md:text-6xl leading-[1] tracking-tight mb-8">
+            Kim <em class="text-terracotta squiggle">jesteśmy?</em>
+          </h2>
+
+          <div class="space-y-5 text-lg text-cocoa/80 leading-relaxed">
+            <p>
+              Działamy w&nbsp;branży od ponad <strong class="text-cocoa">18 lat</strong>. Nasz zespół tworzą zdolni programiści, graficy, copywriterzy, specjaliści od social media, fotografii, video oraz marketingu on-line.
+            </p>
+            <p>
+              Wybierając naszą agencję wybierasz obsługę na najwyższym poziomie, terminowość i&nbsp;pewność, że nie jesteś jednym z&nbsp;tysiąca klientów jak w&nbsp;innej firmie.
+            </p>
+            <p>
+              Nasz cel to stworzenie optymalnej widoczności w&nbsp;świecie on-line. Chcemy tę widoczność zamienić w&nbsp;Twój zysk.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="oferta" class="relative py-24 md:py-36">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+
+      <div class="text-center mb-16 reveal">
+        <div class="eyebrow mb-3">Co robimy</div>
+        <h2 class="display text-5xl md:text-6xl leading-[1] tracking-tight max-w-2xl mx-auto">
+          Sześć obszarów, w&nbsp;których <em class="text-terracotta">jesteśmy w&nbsp;domu.</em>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="soft-card rounded-3xl p-7 reveal">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-gradient-to-br from-coral/30 to-coral/10 grid place-items-center mb-6">
+            <i data-lucide="layout-template" class="w-6 h-6 text-terracotta"></i>
+          </div>
+          <h3 class="display text-2xl mb-2">Strony WWW</h3>
+          <p class="text-sm text-cocoa/70 leading-relaxed">
+            Nowoczesne strony zgodne z&nbsp;wytycznymi Google. Responsywne, szyte pod Twoich klientów. Także modernizacja.
+          </p>
+        </div>
+
+        <div class="soft-card rounded-3xl p-7 reveal">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-gradient-to-br from-sage/30 to-sage/10 grid place-items-center mb-6">
+            <i data-lucide="shopping-bag" class="w-6 h-6 text-sage"></i>
+          </div>
+          <h3 class="display text-2xl mb-2">Sklepy on-line</h3>
+          <p class="text-sm text-cocoa/70 leading-relaxed">
+            Budujemy e-sklepy idealnie dopasowane pod Twojego klienta. Dedykowane rozwiązania — nic z&nbsp;półki.
+          </p>
+        </div>
+
+        <div class="soft-card rounded-3xl p-7 reveal">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-gradient-to-br from-terracotta/30 to-terracotta/10 grid place-items-center mb-6">
+            <i data-lucide="search" class="w-6 h-6 text-terracotta"></i>
+          </div>
+          <h3 class="display text-2xl mb-2">SEO &amp; Google Ads</h3>
+          <p class="text-sm text-cocoa/70 leading-relaxed">
+            Wysokie pozycje w&nbsp;wyszukiwarce. Pozycjonowanie długofalowe i&nbsp;szybkie reklamy sponsorowane.
+          </p>
+        </div>
+
+        <div class="soft-card rounded-3xl p-7 reveal">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-gradient-to-br from-coral/30 to-sage/10 grid place-items-center mb-6">
+            <i data-lucide="users" class="w-6 h-6 text-coral"></i>
+          </div>
+          <h3 class="display text-2xl mb-2">Social media</h3>
+          <p class="text-sm text-cocoa/70 leading-relaxed">
+            Prowadzenie Facebooka. Posty produktowe, branżowe, wizerunkowe. Naturalne zaangażowanie.
+          </p>
+        </div>
+
+        <div class="soft-card rounded-3xl p-7 reveal">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-gradient-to-br from-sage/30 to-coral/10 grid place-items-center mb-6">
+            <i data-lucide="feather" class="w-6 h-6 text-sage"></i>
+          </div>
+          <h3 class="display text-2xl mb-2">Content marketing</h3>
+          <p class="text-sm text-cocoa/70 leading-relaxed">
+            Wartościowe, unikalne treści. Marketing szeptany jako Twój osobisty dział PR w&nbsp;sieci.
+          </p>
+        </div>
+
+        <div class="soft-card rounded-3xl p-7 reveal">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-gradient-to-br from-terracotta/30 to-coral/10 grid place-items-center mb-6">
+            <i data-lucide="camera" class="w-6 h-6 text-terracotta"></i>
+          </div>
+          <h3 class="display text-2xl mb-2">Video &amp; foto</h3>
+          <p class="text-sm text-cocoa/70 leading-relaxed">
+            Sesje zdjęciowe, drony, YouTube, prezentacje. Pokażemy Twoją firmę z&nbsp;każdej strony.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt" class="relative py-24 md:py-36 overflow-hidden">
+    <div class="blob-shape blob-1" style="top: 30%; right: -120px;"></div>
+    <div class="blob-shape blob-2" style="bottom: -80px; left: -100px;"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 md:px-10">
+
+      <div class="text-center mb-16 reveal">
+        <div class="eyebrow mb-3">Kontakt</div>
+        <h2 class="display text-5xl md:text-7xl leading-[1] tracking-tight">
+          Powiedz <em class="text-terracotta">cześć.</em>
+        </h2>
+        <p class="text-xl text-cocoa/70 mt-6 max-w-md mx-auto leading-relaxed">
+          Tworzymy z&nbsp;pasją. Powiedz nam o&nbsp;swoim projekcie — odezwiemy się tego samego dnia.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-5 max-w-4xl mx-auto reveal">
+
+        <a href="tel:+48509289649" class="soft-card rounded-3xl p-7 flex flex-col items-center text-center gap-4 group">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-coral/15 grid place-items-center">
+            <i data-lucide="phone" class="w-6 h-6 text-coral"></i>
+          </div>
+          <div class="eyebrow text-xs">Zadzwoń</div>
+          <div class="display text-2xl">509 289 649</div>
+        </a>
+
+        <a href="mailto:dorota@e-kreacja.com.pl" class="soft-card rounded-3xl p-7 flex flex-col items-center text-center gap-4 group">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-sage/15 grid place-items-center">
+            <i data-lucide="mail" class="w-6 h-6 text-sage"></i>
+          </div>
+          <div class="eyebrow text-xs">Napisz</div>
+          <div class="display text-base sm:text-lg leading-tight break-all">dorota@e-kreacja.com.pl</div>
+        </a>
+
+        <div class="soft-card rounded-3xl p-7 flex flex-col items-center text-center gap-4">
+          <div class="icon-pill w-14 h-14 rounded-2xl bg-terracotta/15 grid place-items-center">
+            <i data-lucide="map-pin" class="w-6 h-6 text-terracotta"></i>
+          </div>
+          <div class="eyebrow text-xs">Wpadnij</div>
+          <div class="display text-lg leading-tight">Jelcz-Laskowice<br/>ul. Oławska 70/14</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-cocoa/10">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+      <div class="flex items-center gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-gradient-to-br from-coral to-terracotta"></div>
+        <span class="display text-lg">Ekreacja</span>
+        <span class="text-cocoa/40 ml-2">· od 2007</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://www.facebook.com/Ekreacja/" target="_blank" rel="noopener"
+           class="w-9 h-9 rounded-full bg-white/70 grid place-items-center hover:bg-white transition shadow-sm">
+          <i data-lucide="facebook" class="w-4 h-4 text-cocoa"></i>
+        </a>
+        <span class="text-cocoa/40 text-xs">© 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    lucide.createIcons();
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      const isOpen = mobileMenu.classList.contains('open');
+      menuBtn.innerHTML = isOpen ? '<i data-lucide="x" class="w-4 h-4"></i>' : '<i data-lucide="menu" class="w-4 h-4"></i>';
+      lucide.createIcons();
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
